@@ -165,19 +165,10 @@ def evolucao_anterior(nome):
     r = requests.get(f"https://pokeapi.co/api/v2/pokemon-species/{nome}/")
     if r.status_code != 200:
         raise PokemonNaoExisteException
-    if nome == "weezing":
-        return "koffing"
-    dic_species = r.json()
-    dic = requests.get(dic_species["evolution_chain"]["url"]).json()
-    first = dic["chain"]["species"]["name"]
-    second = dic["chain"]["evolves_to"][0]["species"]["name"]
-    third = dic["chain"]["evolves_to"][0]["evolves_to"][0]["species"]["name"]
-    if nome == first:
+    if r.json()["evolves_from_species"] == None:
         return None
-    if nome == second:
-        return first
-    if nome == third:
-        return second
+    else:
+        return r.json()["evolves_from_species"]["name"]
 
 """
 7. Dado o nome de um pokémon, liste para quais pokémons ele pode evoluiur.
@@ -192,36 +183,6 @@ O exercicio 7 é opcional e bastante dificil. Se quiser, desligue os testes e v�
 """
 def evolucoes_proximas(nome):
     pass
-    # nome = nome.lower()
-    # r = requests.get(f"https://pokeapi.co/api/v2/pokemon-species/{nome}/")
-    # if r.status_code != 200:
-    #     raise PokemonNaoExisteException
-    # dic_species = r.json()
-    # dic = requests.get(dic_species["evolution_chain"]["url"]).json()
-    # first = dic["chain"]["species"]["name"]
-    # if dic["chain"]["evolves_to"] != []:
-    #     for i in dic["chain"]["evolves_to"]:
-    #         if nome == i["species"]["name"]:
-    #             second = i["species"]["name"]
-    #         else:
-    #             second = dic["chain"]["evolves_to"][0]["species"]["name"]
-    #         if i["evolves_to"] != []:
-    #             for a in i["evolves_to"]:
-    #                 if nome == a["species"]["name"]:
-    #                     third = a["species"]["name"]
-    #                 else:
-    #                     third = dic["chain"]["evolves_to"][0]["evolves_to"][0]["species"]["name"]
-    # evolucoes = []
-    # if nome == first:
-    #     for i in dic["chain"]["evolves_to"]:
-    #         evolucoes.append(i["species"]["name"])
-    #     return evolucoes
-    # if nome == second:
-    #     for i in dic["chain"]["evolves_to"][0]["evolves_to"]:
-    #         evolucoes.append(i["species"]["name"])
-    #     return evolucoes
-    # if nome == third:
-    #     return evolucoes
 
 """
 8. A medida que ganham pontos de experiência, os pokémons sobem de nível.
