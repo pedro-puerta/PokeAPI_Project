@@ -270,7 +270,7 @@ def cadastrar_pokemon(nome_treinador, apelido_pokemon, tipo_pokemon, experiencia
     verificaPokemon = requests.get(f"https://pokeapi.co/api/v2/pokemon-species/{tipo_pokemon.lower()}/")
     if verificaPokemon.status_code != 200:
         raise PokemonNaoExisteException
-    r = requests.put(f"{site_treinador}/treinador/{nome_treinador}/{apelido_pokemon}",json = {"tipo":tipo_pokemon, "experiencia": experiencia})
+    r = requests.put(f"{site_treinador}/treinador/{nome_treinador}/{apelido_pokemon}", json = {"tipo":tipo_pokemon, "experiencia": experiencia})
     if r.status_code == 202:
         return True
     elif r.status_code == 404:
